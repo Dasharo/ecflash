@@ -2,6 +2,8 @@
 #![allow(clippy::missing_safety_doc)]
 #![allow(clippy::needless_range_loop)]
 
+//extern crate glob;
+
 use hwio::{Io, Pio};
 use serialport::{Error, ErrorKind, Result, TTYPort};
 use std::any::Any;
@@ -11,6 +13,7 @@ use std::io::{self, Read, Write};
 use std::process;
 use std::time::Duration;
 use std::thread;
+use glob::glob;
 
 use ecflash::EcFlash;
 
@@ -816,8 +819,16 @@ fn isp(internal: bool, file: &str) -> Result<()> {
             }
         }
     } else {
-        // Open arduino console
-        let mut port = ParallelArduino::new("/dev/ttyACM0")?;
+        // Open first serial device we find
+        let serial_device = glob("/dev/serial/by-id/usb-*")
+            .unwrap()
+            .next()
+            .expect("No serial device found.")
+            .unwrap();
+
+        println!("Using serial device: {:?}", serial_device.display());
+
+        let mut port = ParallelArduino::new(serial_device.to_str().unwrap())?;
 
         // Read ID
         let mut id = [0; 3];

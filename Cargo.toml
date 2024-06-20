@@ -10,6 +10,9 @@ repository = "https://github.com/system76/ecflash"
 [lib]
 name = "ecflash"
 
+[dependencies]
+glob = "0.3.1"
+
 [dev-dependencies]
 libc = "0.2.121"
 redox_hwio = "0.1.5"
