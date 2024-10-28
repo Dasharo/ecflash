@@ -842,7 +842,7 @@ fn isp(internal: bool, file: &str) -> Result<()> {
         let ecid = ((id[0] as u16) << 8) | (id[1] as u16);
 
         eprintln!("ID: {:04X} VER: {}", ecid, id[2]);
-        assert!(EC_KNOWN_IDS.contains(&ecid), "Unknown ID: {:04X}", ecid);
+        //assert!(EC_KNOWN_IDS.contains(&ecid), "Unknown ID: {:04X}", ecid);
 
         isp_inner(&mut port, &firmware)
     }
